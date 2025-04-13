@@ -1,0 +1,270 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: #f4f6fc;
+  color: #333;
+  padding: 20px;
+}
+
+header {
+  position: sticky;
+  top: 0;
+  background-color: #fff;
+  padding: 8px 40px; /* Adjust padding for slim height */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+header nav ul {
+  list-style: none;
+  display: flex;
+  gap: 30px; /* Add spacing between menu items */
+}
+
+header nav ul li {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+header nav ul li a {
+  text-decoration: none;
+  color: #333;
+  padding: 6px 12px; /* Adjust padding to keep it slim */
+  border-radius: 8px;
+  transition: 0.3s;
+}
+
+header nav ul li a:hover {
+  background-color: #3f51b5;
+  color: white;
+}
+
+header h1 {
+  font-size: 18px; /* Make header text smaller for a slimmer look */
+  font-weight: 600;
+  color: #2e3a59;
+  margin: 0;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  header {
+    padding: 8px 20px; /* Adjust for smaller screens */
+    justify-content: center; /* Center the header content */
+  }
+
+  header nav {
+    justify-content: center; /* Align nav items in the center */
+    gap: 20px; /* Adjust spacing between menu items */
+  }
+
+  header nav ul {
+    display: flex;
+    justify-content: center; /* Center the nav items */
+    gap: 15px; /* Adjust gap between items */
+  }
+
+  header h1 {
+    font-size: 16px; /* Smaller font for mobile */
+  }
+}
+
+.container {
+  max-width: 1100px;
+  margin: auto;
+  padding: 20px;
+}
+
+h1 {
+  text-align: center;
+  font-weight: 600;
+  margin-bottom: 30px;
+  color: #2e3a59;
+}
+
+form {
+  background: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  margin-bottom: 30px;
+  animation: slideIn 0.5s ease-out;
+}
+
+.form-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.form-group input,
+.form-group select,
+.form-group button {
+  flex: 1 1 200px;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: 0.3s;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #3f51b5;
+  box-shadow: 0 0 5px #3f51b555;
+}
+
+.form-group button {
+  background: #3f51b5;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.form-group button:hover {
+  background: #303f9f;
+}
+
+.search-area {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.search-area input,
+.search-area button {
+  padding: 10px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.search-area button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.search-area button:hover {
+  background-color: #388e3c;
+}
+
+#recordList {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.record-card {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease;
+  position: relative;
+  animation: fadeIn 0.4s ease;
+}
+
+.record-card:hover {
+  transform: translateY(-5px);
+}
+
+.record-card h3 {
+  margin-bottom: 10px;
+  color: #2c3e50;
+}
+
+.record-card p {
+  margin: 4px 0;
+  font-size: 14px;
+}
+
+.record-actions {
+  margin-top: 15px;
+  display: flex;
+  gap: 10px;
+}
+
+.record-actions button {
+  padding: 6px 14px;
+  font-size: 13px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.edit-btn {
+  background-color: #2196f3;
+  color: white;
+}
+
+.delete-btn {
+  background-color: #f44336;
+  color: white;
+}
+
+footer {
+  text-align: center;
+  margin-top: 50px;
+  font-size: 14px;
+  color: #666;
+  border-top: 1px solid #ddd;
+  padding-top: 20px;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (max-width: 768px) {
+  .form-group input,
+  .form-group select,
+  .form-group button,
+  .search-area input,
+  .search-area button {
+    flex: 1 1 100%;
+  }
+
+  .search-area {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
