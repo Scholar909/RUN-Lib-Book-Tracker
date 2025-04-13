@@ -148,7 +148,7 @@ document.addEventListener('DOMContentLoaded', () => {
   startDate.addEventListener('change', () => renderRecords(nameSearch.value));
   endDate.addEventListener('change', () => renderRecords(nameSearch.value));
 
-  // Print the filtered or all records
+  // Download as PDF, Word, or Image
   printBtn.addEventListener('click', () => {
     const filtered = records.filter(r => {
       const matchDate =
@@ -157,8 +157,35 @@ document.addEventListener('DOMContentLoaded', () => {
       return matchDate;
     });
 
-    const printContent = generatePrintableContent(filtered);
-    printWindow(printContent);
+    const content = generatePrintableContent(filtered);
+
+    // Prompt the user for download type
+    const format = prompt('Download format? (pdf, word, image)').toLowerCase();
+
+    if (format === 'pdf') {
+      const blob = new Blob([content], { type: 'application/pdf' });
+      const url = URL.createObjectURL(blob);
+      downloadFile(url, 'borrowed-records.pdf');
+    } else if (format === 'word') {
+      const wordBlob = new Blob([content], {
+        type: 'application/msword'
+      });
+      const wordUrl = URL.createObjectURL(wordBlob);
+      downloadFile(wordUrl, 'borrowed-records.doc');
+    } else if (format === 'image') {
+      const container = document.createElement('div');
+      container.innerHTML = content;
+      document.body.appendChild(container);
+      html2canvas(container).then(canvas => {
+        const link = document.createElement('a');
+        link.href = canvas.toDataURL('image/png');
+        link.download = 'borrowed-records.png';
+        link.click();
+        document.body.removeChild(container);
+      });
+    } else {
+      alert('Invalid format. Please choose either pdf, word, or image.');
+    }
   });
 
   function generatePrintableContent(recordsToPrint) {
@@ -182,15 +209,11 @@ document.addEventListener('DOMContentLoaded', () => {
     return content;
   }
 
-  function printWindow(content) {
-    const printWindow = window.open('', '', 'height=800,width=600');
-    printWindow.document.write('<html><head><title>Print Records</title>');
-    printWindow.document.write('<style>.record-card { margin-bottom: 20px; border: 1px solid #ddd; padding: 10px; }</style>');
-    printWindow.document.write('</head><body>');
-    printWindow.document.write(content);
-    printWindow.document.write('</body></html>');
-    printWindow.document.close();
-    printWindow.print();
+  function downloadFile(url, filename) {
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.click();
   }
 
   numBooksInput.addEventListener('input', renderBookFields);
