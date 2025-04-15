@@ -10,15 +10,13 @@
 </head>
 <body>
   <header>
-  <nav>
-    <ul>
-      <li><a href="#add">Add</a></li>
-      <li><a href="#search">Search</a></li>
-      <li><a href="#records">Records</a></li>
-      <!-- Exit button added here -->
-      <button id="exitBtn"><i class='bx bx-exit'></i></button>
-    </ul>
-  </nav>
+    <nav>
+      <ul>
+        <li><a href="#add">Add</a></li>
+        <li><a href="records.html">View List</a></li>
+        <li><button id="exitBtn"><i class='bx bx-exit'></i></button></li>
+      </ul>
+    </nav>
   </header>
   
   <div class="container">
@@ -29,8 +27,8 @@
         <label for="name">Name</label>
         <input type="text" id="name" name="name" placeholder="Name" required>
 
-        <label for="class">Class Level</label>
-        <input type="number" id="class" name="class" placeholder="Class" required>
+        <label for="classLevel">Class Level</label>
+        <input type="number" id="classLevel" name="class" placeholder="Class" required>
 
         <label for="matric">Matric No.</label>
         <input type="text" id="matric" name="matric" placeholder="Matric No." required>
@@ -65,41 +63,16 @@
         <button type="submit">Save Record</button>
       </div>
     </form>
-    
-    <div class="search-area" id="search">
-      <label for="searchName">Search by Name</label>
-      <input type="text" id="nameSearch" placeholder="Search by Name">
-      
-      <label for="startDate">Start Date</label>
-      <input type="date" id="startDate">
-      
-      <label for="endDate">End Date</label>
-      <input type="date" id="endDate">
-      
-      <button onclick="filterByDate()">Filter</button>
-      <button id="printBtn">Print/Save</button>
-    </div>
 
-    <div id="records"></div>
-    <div id="recordList"></div>
+    <div class="view-list-button">
+      <a href="records.html" class="btn">View Records</a>
+    </div>
   </div>
 
   <footer>
     <p>&copy; 2025. Created by S.S. Valentine.</p>
   </footer>
   
-  <script src="script.js"></script>
-  <script>
-    // JavaScript for the Exit button
-    document.getElementById('exitBtn').addEventListener('click', function() {
-      if (confirm("Are you sure you want to exit the page?")) {
-        window.close(); // Close the current window
-      }
-    });
-  </script>
-  
-  <!-- Add these in your HTML file head or before the closing </body> -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="scripts.js"></script>
 </body>
 </html>

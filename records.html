@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Borrowing Records</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+  <!-- Libraries -->
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://unpkg.com/docx@7.1.0/build/index.umd.js"></script>
+</head>
+<body>
+
+  <header>
+    <nav>
+      <ul>
+        <li><a href="index.html">Add</a></li>
+        <li><a href=".search-area">Search</a></li>
+        <li><button id="exitBtn"><i class='bx bx-exit'></i></button></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section class="search-area">
+      <input type="text" id="nameSearch" placeholder="Search by Name" />
+      <input type="date" id="startDate" />
+      <input type="date" id="endDate" />
+      <button>Filter</button>
+    </section>
+
+    <section class="export-buttons">
+      <button id="printBtn">Save as PDF</button>
+      <button id="wordBtn">Export as Word</button>
+      <button id="imageBtn">Save as Image</button>
+    </section>
+
+    <section id="recordList">
+      <!-- Records will be displayed here -->
+    </section>
+  </main>
+  
+  <footer>
+  <p>&copy; 2025. Created by S.S. Valentine.</p>
+  </footer>
+
+<script src="record.js"></script>
+</body>
+</html>

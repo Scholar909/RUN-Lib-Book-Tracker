@@ -1,3 +1,4 @@
+/* General Reset and Body Styling */
 * {
   margin: 0;
   padding: 0;
@@ -11,11 +12,12 @@ body {
   padding: 20px;
 }
 
+/* Header */
 header {
   position: sticky;
   top: 0;
   background-color: #fff;
-  padding: 8px 40px; /* Adjust padding for slim height */
+  padding: 8px 40px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   z-index: 10;
   display: flex;
@@ -33,7 +35,7 @@ header nav {
 header nav ul {
   list-style: none;
   display: flex;
-  gap: 30px; /* Add spacing between menu items */
+  gap: 30px;
 }
 
 header nav ul li {
@@ -44,7 +46,7 @@ header nav ul li {
 header nav ul li a {
   text-decoration: none;
   color: #333;
-  padding: 6px 12px; /* Adjust padding to keep it slim */
+  padding: 6px 12px;
   border-radius: 8px;
   transition: 0.3s;
 }
@@ -55,35 +57,37 @@ header nav ul li a:hover {
 }
 
 header h1 {
-  font-size: 18px; /* Make header text smaller for a slimmer look */
+  font-size: 18px;
   font-weight: 600;
   color: #2e3a59;
   margin: 0;
   text-align: center;
 }
 
+/* Responsive Header */
 @media (max-width: 768px) {
   header {
-    padding: 8px 20px; /* Adjust for smaller screens */
-    justify-content: center; /* Center the header content */
+    padding: 8px 20px;
+    justify-content: center;
   }
 
   header nav {
-    justify-content: center; /* Align nav items in the center */
-    gap: 20px; /* Adjust spacing between menu items */
+    justify-content: center;
+    gap: 20px;
   }
 
   header nav ul {
     display: flex;
-    justify-content: center; /* Center the nav items */
-    gap: 15px; /* Adjust gap between items */
+    justify-content: center;
+    gap: 15px;
   }
 
   header h1 {
-    font-size: 16px; /* Smaller font for mobile */
+    font-size: 16px;
   }
 }
 
+/* Main Container */
 .container {
   max-width: 1100px;
   margin: auto;
@@ -97,11 +101,12 @@ h1 {
   color: #2e3a59;
 }
 
+/* Form Styling */
 form {
   background: #fff;
-  padding: 25px;
+  padding: 20px;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   margin-bottom: 30px;
   animation: slideIn 0.5s ease-out;
 }
@@ -109,14 +114,23 @@ form {
 .form-group {
   display: flex;
   flex-wrap: wrap;
-  gap: 15px;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  font-weight: bold;
+  margin-bottom: 0;
+  flex: 0 0 150px;
+  display: inline-block;
 }
 
 .form-group input,
 .form-group select,
 .form-group button {
   flex: 1 1 200px;
-  padding: 12px;
+  padding: 10px;
   border: 1px solid #ccc;
   border-radius: 8px;
   font-size: 14px;
@@ -141,6 +155,30 @@ form {
   background: #303f9f;
 }
 
+/* View List Button */
+.view-list-button {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.view-list-button .btn {
+  display: inline-block;
+  padding: 12px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  background-color: #3f51b5;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.view-list-button .btn:hover {
+  background-color: #303f9f;
+}
+
+/* Search Area */
 .search-area {
   display: flex;
   flex-wrap: wrap;
@@ -169,60 +207,83 @@ form {
   background-color: #388e3c;
 }
 
+/* Record List */
 #recordList {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
+/* Record Card – Compact Adjusted */
 .record-card {
-  background: #ffffff;
-  padding: 20px;
-  border-radius: 16px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-  transition: transform 0.3s ease;
-  position: relative;
-  animation: fadeIn 0.4s ease;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 12px 16px;
+  margin: 12px auto;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: 220px; /* fixed height */
+  overflow: auto; /* scroll if content exceeds */
 }
 
-.record-card:hover {
-  transform: translateY(-5px);
+.record-card .form-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 8px;
+  flex-wrap: nowrap;
 }
 
-.record-card h3 {
-  margin-bottom: 10px;
-  color: #2c3e50;
-}
-
-.record-card p {
-  margin: 4px 0;
+.record-card label {
+  flex: 0 0 80px;
+  font-weight: 500;
   font-size: 14px;
 }
 
-.record-actions {
-  margin-top: 15px;
+.record-card input {
+  flex: 1;
+  padding: 5px 7px;
+  border-radius: 4px;
+  font-size: 13.5px;
+  border: 1px solid #ccc;
+}
+
+/* Button group inside card */
+.record-card .btn-group {
   display: flex;
-  gap: 10px;
+  gap: 6px;
+  margin-top: 4px;
 }
 
-.record-actions button {
-  padding: 6px 14px;
+.record-card .btn-group button {
+  padding: 6px 12px;
   font-size: 13px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
+  border-radius: 4px;
 }
 
-.edit-btn {
-  background-color: #2196f3;
-  color: white;
+/* Status and Book Info – tighter spacing */
+.status-dot {
+  width: 10px;
+  height: 10px;
+  margin-bottom: 6px;
 }
 
-.delete-btn {
-  background-color: #f44336;
-  color: white;
+.status-text,
+.book-info {
+  margin-top: 6px;
 }
 
+.book-info input {
+  width: 100%;
+  padding: 6px 8px;
+}
+
+/* Footer */
 footer {
   text-align: center;
   margin-top: 50px;
@@ -232,6 +293,7 @@ footer {
   padding-top: 20px;
 }
 
+/* Animations */
 @keyframes slideIn {
   from {
     transform: translateY(20px);
@@ -254,6 +316,7 @@ footer {
   }
 }
 
+/* Responsive Adjustments */
 @media (max-width: 768px) {
   .form-group input,
   .form-group select,
@@ -266,5 +329,10 @@ footer {
   .search-area {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .record-actions {
+    flex-direction: column;
+    gap: 8px;
   }
 }
