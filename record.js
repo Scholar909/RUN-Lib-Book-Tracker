@@ -169,45 +169,45 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Export as Word
-  wordBtn.addEventListener('click', () => {
-    const doc = new window.docx.Document();
-    const sections = [];
+wordBtn.addEventListener('click', () => {
+  const doc = new window.docx.Document();
+  const sections = [];
 
-    allRecords.forEach(record => {
-      const status = getStatusText(record);
+  allRecords.forEach(record => {
+    const status = getStatusText(record);
 
-      sections.push(
-        new window.docx.Paragraph({
-          children: [
-            new window.docx.TextRun({ text: `Name: ${record.name}`, bold: true }),
-          ],
-        }),
-        new window.docx.Paragraph(`Matric No: ${record.matric}`),
-        new window.docx.Paragraph(`Class Level: ${record.classLevel}`),
-        new window.docx.Paragraph(`Gender: ${record.gender}`),
-        new window.docx.Paragraph(`Department: ${record.department}`),
-        new window.docx.Paragraph(`Block: ${record.block}`),
-        new window.docx.Paragraph(`Date Borrowed: ${record.dateBorrowed}`),
-        new window.docx.Paragraph(`Return Before: ${record.returnBefore}`),
-        new window.docx.Paragraph(`Date Returned: ${record.dateReturned || '---'}`),
-        new window.docx.Paragraph(`Status: ${status}`),
-        ...record.books.map((book, i) => new window.docx.Paragraph(`Book ${i + 1}: ${book.title} by ${book.author}`)),
-        new window.docx.Paragraph(''),
-        new window.docx.Paragraph({ text: '---------------------------------------', alignment: window.docx.AlignmentType.CENTER })
-      );
-    });
-
-    doc.addSection({ children: sections });
-
-    window.docx.Packer.toBlob(doc).then(blob => {
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = 'borrow-records.docx';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    });
+    sections.push(
+      new window.docx.Paragraph({
+        children: [
+          new window.docx.TextRun({ text: `Name: ${record.name}`, bold: true }),
+        ],
+      }),
+      new window.docx.Paragraph({ text: `Matric No: ${record.matric}` }),
+      new window.docx.Paragraph({ text: `Class Level: ${record.classLevel}` }),
+      new window.docx.Paragraph({ text: `Gender: ${record.gender}` }),
+      new window.docx.Paragraph({ text: `Department: ${record.department}` }),
+      new window.docx.Paragraph({ text: `Block: ${record.block}` }),
+      new window.docx.Paragraph({ text: `Date Borrowed: ${record.dateBorrowed}` }),
+      new window.docx.Paragraph({ text: `Return Before: ${record.returnBefore}` }),
+      new window.docx.Paragraph({ text: `Date Returned: ${record.dateReturned || '---'}` }),
+      new window.docx.Paragraph({ text: `Status: ${status}` }),
+      ...record.books.map((book, i) => new window.docx.Paragraph({ text: `Book ${i + 1}: ${book.title} by ${book.author}` })),
+      new window.docx.Paragraph(''),
+      new window.docx.Paragraph({ text: '---------------------------------------', alignment: window.docx.AlignmentType.CENTER })
+    );
   });
+
+  doc.addSection({ children: sections });
+
+  window.docx.Packer.toBlob(doc).then(blob => {
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'borrow-records.docx';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  });
+});
 
   // Export as PDF
   pdfBtn.addEventListener('click', () => {
