@@ -203,7 +203,9 @@ document.addEventListener('DOMContentLoaded', () => {
       const link = document.createElement('a');
       link.href = URL.createObjectURL(blob);
       link.download = 'borrow-records.docx';
+      document.body.appendChild(link);
       link.click();
+      document.body.removeChild(link);
     });
   });
 
