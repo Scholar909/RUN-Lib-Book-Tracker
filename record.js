@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const printBtn = document.getElementById('printBtn');
   const wordBtn = document.getElementById('wordBtn');
   const imageBtn = document.getElementById('imageBtn');
+  const pdfBtn = document.getElementById('pdfBtn'); // Added for PDF
   const exitBtn = document.getElementById('exitBtn');
 
   let allRecords = JSON.parse(localStorage.getItem('borrowRecords')) || [];
@@ -16,13 +17,18 @@ document.addEventListener('DOMContentLoaded', () => {
     return new Date(record.dateReturned) <= new Date(record.returnBefore) ? 'green' : 'red';
   }
 
+  function getStatusText(record) {
+    const statusColor = getStatusColor(record);
+    return !record.dateReturned ? 'Not returned yet' :
+      statusColor === 'green' ? 'Returned on time' : 'Returned late';
+  }
+
   function createCard(record, index) {
     const card = document.createElement('div');
     card.classList.add('record-card');
 
     const statusColor = getStatusColor(record);
-    const statusText = !record.dateReturned ? 'Not returned yet' :
-      statusColor === 'green' ? 'Returned on time' : 'Returned late';
+    const statusText = getStatusText(record);
 
     const booksHTML = record.books.map(
       (b, i) => `<div class="book-info">
@@ -85,7 +91,6 @@ document.addEventListener('DOMContentLoaded', () => {
       </div>
     `;
 
-    // Button Actions
     const editBtn = card.querySelector('.edit-btn');
     const saveBtn = card.querySelector('.save-btn');
     const cancelBtn = card.querySelector('.cancel-btn');
@@ -153,20 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
   endDate.addEventListener('change', filterAndDisplayRecords);
   document.querySelector('.search-area button').addEventListener('click', filterAndDisplayRecords);
 
-  // Export buttons
-  printBtn.addEventListener('click', () => {
-    const { jsPDF } = window.jspdf;
-    const pdf = new jsPDF('p', 'pt', 'a4');
-    html2canvas(recordList).then(canvas => {
-      const img = canvas.toDataURL('image/png');
-      const imgProps = pdf.getImageProperties(img);
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-      pdf.addImage(img, 'PNG', 0, 0, pdfWidth, pdfHeight);
-      pdf.save('borrow-records.pdf');
-    });
-  });
-
+  // Export as image
   imageBtn.addEventListener('click', () => {
     html2canvas(recordList).then(canvas => {
       const link = document.createElement('a');
@@ -176,16 +168,36 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // Export as Word
   wordBtn.addEventListener('click', () => {
-    const doc = new window.docx.Document({
-      sections: [{
-        children: Array.from(recordList.children).map(card => {
-          return new window.docx.Paragraph({
-            children: [new window.docx.TextRun(card.innerText)],
-          });
-        })
-      }]
+    const doc = new window.docx.Document();
+    const sections = [];
+
+    allRecords.forEach(record => {
+      const status = getStatusText(record);
+
+      sections.push(
+        new window.docx.Paragraph({
+          children: [
+            new window.docx.TextRun({ text: `Name: ${record.name}`, bold: true }),
+          ],
+        }),
+        new window.docx.Paragraph(`Matric No: ${record.matric}`),
+        new window.docx.Paragraph(`Class Level: ${record.classLevel}`),
+        new window.docx.Paragraph(`Gender: ${record.gender}`),
+        new window.docx.Paragraph(`Department: ${record.department}`),
+        new window.docx.Paragraph(`Block: ${record.block}`),
+        new window.docx.Paragraph(`Date Borrowed: ${record.dateBorrowed}`),
+        new window.docx.Paragraph(`Return Before: ${record.returnBefore}`),
+        new window.docx.Paragraph(`Date Returned: ${record.dateReturned || '---'}`),
+        new window.docx.Paragraph(`Status: ${status}`),
+        ...record.books.map((book, i) => new window.docx.Paragraph(`Book ${i + 1}: ${book.title} by ${book.author}`)),
+        new window.docx.Paragraph(''),
+        new window.docx.Paragraph({ text: '---------------------------------------', alignment: window.docx.AlignmentType.CENTER })
+      );
     });
+
+    doc.addSection({ children: sections });
 
     window.docx.Packer.toBlob(doc).then(blob => {
       const link = document.createElement('a');
@@ -193,6 +205,42 @@ document.addEventListener('DOMContentLoaded', () => {
       link.download = 'borrow-records.docx';
       link.click();
     });
+  });
+
+  // Export as PDF
+  pdfBtn.addEventListener('click', () => {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    let y = 10;
+
+    allRecords.forEach((record, idx) => {
+      const status = getStatusText(record);
+
+      doc.text(`Name: ${record.name}`, 10, y); y += 7;
+      doc.text(`Matric No: ${record.matric}`, 10, y); y += 7;
+      doc.text(`Class Level: ${record.classLevel}`, 10, y); y += 7;
+      doc.text(`Gender: ${record.gender}`, 10, y); y += 7;
+      doc.text(`Department: ${record.department}`, 10, y); y += 7;
+      doc.text(`Block: ${record.block}`, 10, y); y += 7;
+      doc.text(`Date Borrowed: ${record.dateBorrowed}`, 10, y); y += 7;
+      doc.text(`Return Before: ${record.returnBefore}`, 10, y); y += 7;
+      doc.text(`Date Returned: ${record.dateReturned || '---'}`, 10, y); y += 7;
+      doc.text(`Status: ${status}`, 10, y); y += 7;
+
+      record.books.forEach((book, i) => {
+        doc.text(`Book ${i + 1}: ${book.title} by ${book.author}`, 10, y); y += 7;
+      });
+
+      y += 5;
+      doc.line(10, y, 200, y); y += 10;
+
+      if (y > 270) {
+        doc.addPage();
+        y = 10;
+      }
+    });
+
+    doc.save('borrow-records.pdf');
   });
 
   // Exit
