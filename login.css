@@ -36,6 +36,7 @@ body {
   width: 100%;
   text-align: center;
   animation: slideUp 0.8s ease;
+  min-height: 350px; /* Minimum height for mobile */
 }
 
 .login-container h2 {
@@ -114,11 +115,19 @@ footer {
   .login-container {
     padding: 2rem 1.5rem;
     max-width: 90%;
+    min-height: 350px; /* Ensure minimum height on mobile */
   }
 
   input, button {
     font-size: 15px;
     padding: 12px;
+  }
+}
+
+@media screen and (min-width: 601px) {
+  .login-container {
+    max-width: 500px;
+    padding: 3rem 2.5rem;
   }
 }
 
@@ -136,4 +145,4 @@ footer {
 
 .login-container p a:hover {
   text-decoration: underline;
-}
+                           }
