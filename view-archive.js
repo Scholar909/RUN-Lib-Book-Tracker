@@ -80,7 +80,7 @@ const displayBooks = (books) => {
 
     // Determine whether to show the Get Book link
     let getBookLink = '';
-    if (book.status === 'online' || book.status === 'Both') {
+    if (book.status === 'Online' || book.status === 'Both') {
       getBookLink = `
         <div class="get-book">
           <a href="${book.docLink}" target="_blank">Get Book</a>
