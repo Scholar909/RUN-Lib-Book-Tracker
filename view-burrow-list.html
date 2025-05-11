@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BookRun - Burrow List</title>
+  <link rel="stylesheet" href="footer.css" />
+  <link rel="stylesheet" href="header.css" />
+  <link rel="stylesheet" href="view-burrow-list.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+
+  <div id="header-placeholder"></div>
+  <script>
+    fetch('header.html')
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById('header-placeholder').innerHTML = html;
+        const script = document.createElement('script');
+        script.src = 'header.js';
+        document.body.appendChild(script);
+      });
+  </script>
+
+  <main class="burrow-container">
+    <header class="search-header">
+      <input type="text" id="search-name" placeholder="Search by Name">
+      <input type="text" id="search-level" placeholder="Search by Level">
+      <input type="date" id="start-date">
+      <input type="date" id="end-date">
+      <button id="clear-all">Clear All</button>
+      <i class='bx bx-download' id="download-btn"></i>
+    </header>
+    
+    <label for="filter-status">Filter by Status:</label>
+    <div class="search-container">
+      <input type="text" id="filter-status" placeholder="Search 'yet', 'late', or 'early'">
+    </div>
+
+    <div id="burrow-list" class="card-list">
+      <!-- Cards will be inserted dynamically -->
+    </div>
+  </main>
+  
+<div id="editModal" class="modal" style="display:none;">
+  <form id="editForm">
+    <input type="hidden" id="editId">
+    <label for="editName">Name</label>
+    <input type="text" id="editName" required>
+    
+    <label for="editLevel">Level</label>
+    <input type="text" id="editLevel" required>
+    
+    <label for="editPhone">Phone</label>
+    <input type="text" id="editPhone" required>
+    
+    <label for="editDepartment">Department</label>
+    <input type="text" id="editDepartment" required>
+    
+    <label for="editLocation">Location</label>
+    <input type="text" id="editLocation" required>
+    
+    <label for="editBooks">Books Borrowed</label>
+    <input type="text" id="editBooks" required>
+    
+    <label for="editReturnBefore">Return Before</label>
+    <input type="date" id="editReturnBefore" required readonly style="background-color: #e0e0e0">
+    
+    <label for="editDateReturned">Returned Date</label>
+    <input type="date" id="editDateReturned">
+    
+    <button type="submit">Update</button>
+    <button type="button" onclick="closeEditModal()" id="closeBtn" class="close-btn">Cancel</button>
+  </form>
+</div>
+
+  <div id="footer-placeholder"></div>
+  <script>
+    fetch('footer.html')
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById('footer-placeholder').innerHTML = html;
+        const script = document.createElement('script');
+        script.src = 'footer.js';
+        document.body.appendChild(script);
+      });
+  </script>
+  
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyADxQ63yGYl0X4hlbpmuE9r4HPan2rJPGY",
+    authDomain: "book-tracker-run.firebaseapp.com",
+    projectId: "book-tracker-run",
+    storageBucket: "book-tracker-run.appspot.com",
+    messagingSenderId: "87649407725",
+    appId: "1:87649407725:web:34071fed2135c593d332e4"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      // User not logged in, redirect to login
+      window.location.replace("login.html");
+    }
+  });
+</script>
+  
+<script>
+document.getElementById('download-btn').addEventListener('click', () => {
+  const element = document.getElementById('burrow-list');
+
+  const opt = {
+    margin:       0.5,
+    filename:     'Burrow_List.pdf',
+    image:        { type: 'jpeg', quality: 0.98 },
+    html2canvas:  { scale: 2 },
+    jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+  };
+
+  html2pdf().set(opt).from(element).save();
+});
+</script>
+
+  <script src="view-burrow-list.js" type="module"></script>
+</body>
+</html>

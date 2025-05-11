@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BookRun - View Archive</title>
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <link rel="stylesheet" href="header.css" />
+  <link rel="stylesheet" href="footer.css" />
+  <link rel="stylesheet" href="view-archive.css" />
+</head>
+<body>
+
+  <div id="header-placeholder"></div>
+  <script>
+    fetch('header.html')
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById('header-placeholder').innerHTML = html;
+        const script = document.createElement('script');
+        script.src = 'header.js';
+        document.body.appendChild(script);
+      });
+  </script>
+
+  <main class="archive-container">
+
+    <section class="summary">
+      <p>Total Books: <span id="totalBooks">0</span></p>
+      <p>Total Categories: <span id="totalCategories">0</span></p>
+    </section>
+
+    <section class="filters">
+      <input type="text" id="filterTitle" placeholder="Search by Book Title" />
+      <input type="text" id="filterAuthor" placeholder="Search by Author" />
+      <input type="text" id="filterStatus" placeholder="Search by Status" />
+      <input type="text" id="filterCategory" placeholder="Search by Category" />
+      <button id="categoryFilterBtn">Filter by Category</button>
+    </section>
+
+    <div class="modal-overlay" id="categoryModal">
+      <div class="modal">
+        <h3>Select a Category</h3>
+        <ul id="categoryList"></ul>
+        <button id="closeCategoryModal">Close</button>
+      </div>
+    </div>
+
+    <section class="archive-books" id="bookShelf">
+      <!-- Archived books will be shown here -->
+    </section>
+  </main>
+  
+   <br>
+    <br>
+
+  <div id="footer-placeholder"></div>
+  <script>
+    fetch('footer.html')
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById('footer-placeholder').innerHTML = html;
+        const script = document.createElement('script');
+        script.src = 'footer.js';
+        document.body.appendChild(script);
+      });
+  </script>
+  
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyADxQ63yGYl0X4hlbpmuE9r4HPan2rJPGY",
+      authDomain: "book-tracker-run.firebaseapp.com",
+      projectId: "book-tracker-run",
+      storageBucket: "book-tracker-run.appspot.com",
+      messagingSenderId: "87649407725",
+      appId: "1:87649407725:web:34071fed2135c593d332e4"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        window.location.replace("login.html");
+      }
+    });
+  </script>
+  
+  <script src="view-archive.js" type="module"></script>
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Help / About</title>
+  <link rel="stylesheet" href="header.css" />
+  <link rel="stylesheet" href="footer.css" />
+  <link rel="stylesheet" href="about.css" />
+</head>
+<body>
+
+  <div id="header-placeholder"></div>
+  <script>
+    fetch('header.html')
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById('header-placeholder').innerHTML = html;
+        const script = document.createElement('script');
+        script.src = 'header.js';
+        document.body.appendChild(script);
+      });
+  </script>
+
+  <main>
+    <div class="content">
+      <h1>Help & About</h1>
+
+      <section>
+        <h2>Welcome, Library Member</h2>
+        <p>This website is exclusively for registered library members. If you're viewing this page, you are successfully logged in and have access to BookRun’s record-keeping system.</p>
+      </section>
+
+      <section>
+        <h2>What You Can Do</h2>
+        <p>BookRun is designed to help manage and maintain accurate records within the library. As a member, you can:</p>
+        <ul>
+          <li>Record and view borrowed books and borrower details.</li>
+          <li>Maintain a log of all available books in the library — whether on shelf, archived, or borrowed.</li>
+          <li>Track inventory and update book statuses as needed.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Important Guidelines</h2>
+        <ul>
+          <li>**No Recovery for Deleted Data**: Once an item is deleted, it is permanently removed. Please be absolutely sure before deleting anything.</li>
+          <li>**Editing Limitations**: Some records can be edited, others cannot. Take care to input accurate data from the start.</li>
+          <li>**Avoid Duplicates**: Double-entry of the same book or user record can disrupt the system. Always confirm before submitting.</li>
+          <li>**Proofread Entries**: Mistakes in spelling, formatting, or categorization can cause confusion. Always double-check your input.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Support</h2>
+        <p>If you run into any issues while using the platform or need further help, please don’t hesitate to reach out:</p>
+        <ul>
+          <li>Contact the <a href="https://wa.me/2348122984954">HOD</a> now.</li>
+          <li>Or message our team directly on WhatsApp: <a href="https://wa.me/2348118663849">Chat Now</a></li>
+        </ul>
+      </section>
+
+    </div>
+  </main>
+
+  <br><br><br>
+
+  <div id="footer-placeholder"></div>
+  <script>
+    fetch('footer.html')
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById('footer-placeholder').innerHTML = html;
+        const script = document.createElement('script');
+        script.src = 'footer.js';
+        document.body.appendChild(script);
+      });
+  </script>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyADxQ63yGYl0X4hlbpmuE9r4HPan2rJPGY",
+      authDomain: "book-tracker-run.firebaseapp.com",
+      projectId: "book-tracker-run",
+      storageBucket: "book-tracker-run.appspot.com",
+      messagingSenderId: "87649407725",
+      appId: "1:87649407725:web:34071fed2135c593d332e4"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        window.location.replace("login.html");
+      }
+    });
+  </script>
+
+  <script src="about.js"></script>
+</body>
+</html>

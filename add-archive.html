@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BookRun - Add to Archive</title>
+  <link rel="stylesheet" href="header.css" />
+  <link rel="stylesheet" href="footer.css" />
+  <link rel="stylesheet" href="add-archive.css" />
+</head>
+<body>
+
+  <div id="header-placeholder"></div>
+  <script>
+    fetch('header.html')
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById('header-placeholder').innerHTML = html;
+        const script = document.createElement('script');
+        script.src = 'header.js';
+        document.body.appendChild(script);
+      });
+  </script>
+
+  <main class="archive-form-container">
+    <h2>Add a Book to Archive</h2>
+    <form id="archiveForm">
+      <label>Book Cover (Optional)</label>
+      <input type="file" id="bookImage" accept="image/*" />
+
+      <label for="bookTitle">Book Title</label>
+      <input type="text" id="bookTitle" required />
+
+      <label for="bookAuthor">Book Author</label>
+      <input type="text" id="bookAuthor" required />
+
+      <label for="bookCategory">Category</label>
+      <input type="text" id="bookCategory" required />
+
+      <label>Status</label>
+      <div class="checkbox-group">
+        <label><input type="checkbox" name="status" value="On Shelf" /> On Shelf</label>
+        <label><input type="checkbox" name="status" value="Online" /> Online</label>
+        <label><input type="checkbox" name="status" value="Both" /> Both</label>
+      </div>
+
+      <div id="onlineLinkField" style="display: none;">
+        <label for="docLink">Document Link (for Online/Both)</label>
+        <input type="url" id="docLink" placeholder="https://example.com/book.pdf" />
+      </div>
+
+      <button type="submit">Add to Archive</button>
+    </form>
+
+    <p id="archive-message"></p>
+  </main>
+
+  <section id="footer-placeholder"></section>
+  <script>
+    fetch('footer.html')
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById('footer-placeholder').innerHTML = html;
+        const script = document.createElement('script');
+        script.src = 'footer.js';
+        document.body.appendChild(script);
+      });
+  </script>
+  
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyADxQ63yGYl0X4hlbpmuE9r4HPan2rJPGY",
+    authDomain: "book-tracker-run.firebaseapp.com",
+    projectId: "book-tracker-run",
+    storageBucket: "book-tracker-run.appspot.com",
+    messagingSenderId: "87649407725",
+    appId: "1:87649407725:web:34071fed2135c593d332e4"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      // User not logged in, redirect to login
+      window.location.replace("login.html");
+    }
+  });
+</script>
+  
+  <script src="add-archive.js" type="module"></script>
+</body>
+</html>

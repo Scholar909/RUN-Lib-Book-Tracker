@@ -1,23 +1,43 @@
-// Hardcoded users: Add them here like {username: 'user1', password: 'pass123'}
-const users = [
-  { username: "admin", password: "adminpass" },
-  { username: "john", password: "john123" },
-  { username: "jane", password: "jane456" }
-];
+if (!/Mobi|Android/i.test(navigator.userAgent)) {
+  document.body.innerHTML = "<h2>This app is only available on mobile devices.</h2>";
+} else {
+  // Your other JS code and imports go below this line
+}
 
-document.getElementById("loginForm").addEventListener("submit", function (e) {
+// Firebase config
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyADxQ63yGYl0X4hlbpmuE9r4HPan2rJPGY",
+  authDomain: "book-tracker-run.firebaseapp.com",
+  projectId: "book-tracker-run",
+  storageBucket: "book-tracker-run.appspot.com",
+  messagingSenderId: "87649407725",
+  appId: "1:87649407725:web:34071fed2135c593d332e4"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth();
+
+const form = document.getElementById("loginForm");
+const errorMessage = document.getElementById("errorMessage");
+
+form.addEventListener("submit", (e) => {
   e.preventDefault();
-  const username = document.getElementById("username").value.trim();
-  const password = document.getElementById("password").value.trim();
-  const errorMsg = document.getElementById("errorMsg");
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
 
-  const userFound = users.find(user => user.username === username && user.password === password);
-
-  if (userFound) {
-    // Save login state
-    localStorage.setItem("loggedInUser", username);
-    window.location.href = "main.html"; // redirect to editable section
-  } else {
-    errorMsg.textContent = "Invalid username or password.";
+  if (!email.endsWith("@bookrun.local")) {
+    errorMessage.textContent = "Email must end with @bookrun.local";
+    return;
   }
+
+  signInWithEmailAndPassword(auth, email, password)
+    .then(() => {
+      window.location.href = "home.html";
+    })
+    .catch((error) => {
+      errorMessage.textContent = error.message;
+    });
 });

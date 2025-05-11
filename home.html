@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BookRun - Home</title>
+  <link rel="stylesheet" href="header.css" />
+  <link rel="stylesheet" href="footer.css">
+  <link rel="stylesheet" href="home.css" />
+</head>
+<body>
+
+  <div id="header-placeholder"></div>
+  <script>
+    fetch('header.html')
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById('header-placeholder').innerHTML = html;
+        const script = document.createElement('script');
+        script.src = 'header.js';
+        document.body.appendChild(script);
+      });
+  </script>
+
+  <main class="home-container">
+    <h1 class="typing-text" id="typing-text"></h1>
+
+    <section class="rules">
+      <h2>Library Rules</h2>
+      <div class="rule-list">
+        <div class="do">
+          <h3>Do's</h3>
+          <ul>
+            <li>Return books on time.</li>
+            <li>Handle books with care.</li>
+            <li>Fill burrower details accurately.</li>
+            <li>Update return dates as needed.</li>
+            <li>Encourage others to donate old books.</li>
+          </ul>
+        </div>
+        <div class="dont">
+          <h3>Don'ts</h3>
+          <ul>
+            <li>Don’t borrow more than 3 books at once.</li>
+            <li>Don’t archive a book twice.</li>
+            <li>Don’t give false borrower data.</li>
+            <li>Don’t delete records without reason.</li>
+            <li>Don’t share private book links without permission.</li>
+          </ul>
+        </div>
+        <div class="rules">
+          <h3>Rules</h3>
+            <ul>
+              <li>An individual is allowed to borrow a <strong>maximum of three books at once</strong>. The duration of return is <strong>One Month</strong>.</li>
+              <li>The duration of return for <strong>two books</strong> is <strong>3 weeks</strong>.</li>
+              <li>The duration of return for <strong>one book</strong> is <strong>2 weeks</strong>.</li>
+              <li>The borrower is expected to <strong>fill in the correct details</strong> required by the Librarian(s) at the point of borrowing.</li>
+              <li><strong>Failure to return the borrowed book(s)</strong> on or before the due return date without communication of reason(s) will incur a <strong>fine of ₦200 per week</strong> of extension.</li>
+              <li>An <strong>extension of return date</strong> can be made to any of the librarians via a WhatsApp message, phone call, or direct visit to the Library.</li>
+              <li>Any <strong>tear or damage on returned book(s)</strong> will incur a <strong>fine of ₦300 upwards</strong> on each book based on the extent of damage, at the discretion of the Librarian(s).</li>
+              <li>In case of <strong>loss of borrowed book(s)</strong>, the borrower is expected to gift the department a <strong>brand new book(s)</strong> of the type borrowed and lost.</li>
+              <li>For <strong>any other enquiries</strong> regarding borrowed books or the library unit, you can <strong>contact the Head of Library</strong> on WhatsApp or call on <strong>08122984954</strong>.</li>
+            </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="footer-placeholder"></div>
+  <script>
+    fetch('footer.html')
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById('footer-placeholder').innerHTML = html;
+        const script = document.createElement('script');
+        script.src = 'footer.js';
+        document.body.appendChild(script);
+      });
+  </script>
+  
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyADxQ63yGYl0X4hlbpmuE9r4HPan2rJPGY",
+    authDomain: "book-tracker-run.firebaseapp.com",
+    projectId: "book-tracker-run",
+    storageBucket: "book-tracker-run.appspot.com",
+    messagingSenderId: "87649407725",
+    appId: "1:87649407725:web:34071fed2135c593d332e4"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      // User not logged in, redirect to login
+      window.location.replace("login.html");
+    }
+  });
+</script>
+
+  <script src="home.js"></script>
+</body>
+</html>

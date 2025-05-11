@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Books for Sale</title>
+  <link rel="stylesheet" href="header.css">
+  <link rel="stylesheet" href="footer.css">
+  <link rel="stylesheet" href="book-for-sale.css">
+</head>
+<body>
+  <div id="header-placeholder"></div>
+  <script>
+    fetch('header.html')
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById('header-placeholder').innerHTML = html;
+        const script = document.createElement('script');
+        script.src = 'header.js';
+        document.body.appendChild(script);
+      });
+  </script>
+
+  <main class="sale-section">
+    <div class="sale-controls">
+      <button id="add-book-btn">Add Book</button>
+      <button id="clear-all" onclick="clearAllBooks()">Clear All</button>
+
+      <div class="search-filters">
+        <input type="text" id="search-title" placeholder="Search by Title">
+        <input type="text" id="search-author" placeholder="Search by Author">
+        <input type="number" id="min-price" placeholder="Min Price">
+        <input type="number" id="max-price" placeholder="Max Price">
+        <button onclick="filterBooks()">Search</button>
+      </div>
+    </div>
+
+    <table class="book-table">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Author</th>
+          <th>Price (₦)</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="books-list"></tbody>
+    </table>
+  </main>
+
+  <!-- Modal for Adding Book -->
+  <div id="add-book-modal" class="modal">
+    <div class="modal-content">
+      <h3>Add Book for Sale</h3>
+      <label>Title:</label>
+      <input type="text" id="book-title">
+
+      <label>Author:</label>
+      <input type="text" id="book-author">
+
+      <label>Price (₦):</label>
+      <input type="number" id="book-price">
+
+      <button onclick="saveBook()">Save</button>
+      <button onclick="closeModal()">Cancel</button>
+    </div>
+  </div>
+  
+  <br>
+  <br>
+  <br>
+
+  <div id="footer-placeholder"></div>
+  <script>
+    fetch('footer.html')
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById('footer-placeholder').innerHTML = html;
+        const script = document.createElement('script');
+        script.src = 'footer.js';
+        document.body.appendChild(script);
+      });
+  </script>
+  
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyADxQ63yGYl0X4hlbpmuE9r4HPan2rJPGY",
+    authDomain: "book-tracker-run.firebaseapp.com",
+    projectId: "book-tracker-run",
+    storageBucket: "book-tracker-run.appspot.com",
+    messagingSenderId: "87649407725",
+    appId: "1:87649407725:web:34071fed2135c593d332e4"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      // User not logged in, redirect to login
+      window.location.replace("login.html");
+    }
+  });
+</script>
+  
+  <script src="book-for-sale.js" type="module"></script>
+</body>
+</html>

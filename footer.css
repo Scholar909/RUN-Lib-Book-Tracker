@@ -1,0 +1,19 @@
+footer {
+  align-content: center;
+  font-size: 12px;
+  padding: 20px;
+  background: var(--header-bg);
+  color: var(--text);
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.2);
+}
+
+#footer-placeholder{
+  width: 100%;
+}
+
+.footer p{
+  text-align: center;
+}
