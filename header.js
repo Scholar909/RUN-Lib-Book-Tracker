@@ -36,7 +36,7 @@ function logout() {
     signOut(auth).then(() => {
       localStorage.clear(); // Clear session data
       sessionStorage.clear();
-      window.location.replace("login.html");
+      window.location.replace("index.html");
     }).catch((error) => {
       alert("Logout failed: " + error.message);
     });
