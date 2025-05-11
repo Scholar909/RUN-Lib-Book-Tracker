@@ -59,19 +59,24 @@ document.getElementById('archiveForm').addEventListener('submit', function(event
   if (bookTitle && bookAuthor && bookCategory && status) {
     // Create a reference for Firebase Storage (for image upload)
     let imageURL = null;
+
     if (bookImage) {
+      // Image selected, upload to Firebase
       const storageRef = ref(storage, 'bookImages/' + bookImage.name);
       uploadBytes(storageRef, bookImage).then(snapshot => {
         getDownloadURL(snapshot.ref).then(url => {
           imageURL = url;
           saveBookToFirestore(bookTitle, bookAuthor, bookCategory, status, docLink, imageURL);
         });
+      }).catch(error => {
+        alert('Error uploading image: ' + error.message);
       });
     } else {
+      // No image selected, proceed without uploading an image
       saveBookToFirestore(bookTitle, bookAuthor, bookCategory, status, docLink, imageURL);
     }
   } else {
-    document.getElementById('archive-message').textContent = 'Please fill out all required fields!';
+    alert('Please fill out all required fields!');
   }
 });
 
@@ -85,12 +90,12 @@ function saveBookToFirestore(title, author, category, status, docLink, imageURL)
     category: category,
     status: status,
     docLink: status.includes('Online') || status.includes('Both') ? docLink : null,
-    imageURL: imageURL
+    imageURL: imageURL // Will be null if no image is uploaded
   }).then(() => {
-    document.getElementById('archive-message').textContent = 'Book added to archive successfully!';
+    alert('Book added to archive successfully!');
     document.getElementById('archiveForm').reset();
     toggleLinkField(); // Hide the document link input if status changes
   }).catch(error => {
-    document.getElementById('archive-message').textContent = 'Error adding book: ' + error.message;
+    alert('Error adding book: ' + error.message);
   });
 }
