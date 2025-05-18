@@ -100,7 +100,7 @@ const displayBooks = (books) => {
           <button class="delete-btn" data-id="${book.id}">Delete Book</button>
         </div>
         <div class="book-image">
-        ${book.image ? `<img src="${book.image}" alt="Book Image">` : ''}
+        ${book.imageURL ? `<img src="${book.imageURL}" alt="Book Image">` : ''}
         </div>
       </div>
     `;
@@ -154,6 +154,22 @@ document.addEventListener('click', (e) => {
 // Filter on input
 [filterTitle, filterAuthor, filterStatus, filterCategory].forEach(input => {
   input.addEventListener('input', () => displayBooks(allBooks));
+});
+
+// Handle delete book
+document.addEventListener('click', async (e) => {
+  if (e.target.classList.contains('delete-btn')) {
+    const bookId = e.target.dataset.id;
+    if (confirm("Are you sure you want to permanently delete this book?")) {
+      try {
+        await deleteDoc(doc(db, "books", bookId));
+        alert("Book deleted successfully.");
+        fetchBooks(); // Refresh the list
+      } catch (error) {
+        console.error("Error deleting book:", error);
+      }
+    }
+  }
 });
 
 // Initial call

@@ -61,19 +61,31 @@ document.getElementById('archiveForm').addEventListener('submit', function(event
     let imageURL = null;
 
     if (bookImage) {
-      // Image selected, upload to Firebase
-      const storageRef = ref(storage, 'bookImages/' + bookImage.name);
-      uploadBytes(storageRef, bookImage).then(snapshot => {
-        getDownloadURL(snapshot.ref).then(url => {
-          imageURL = url;
+      const formData = new FormData();
+      formData.append('image', bookImage);
+    
+      const imgbbApiKey = '76b5c9b8204181e4bb53f33eb96b8efb'; // Replace with your actual ImgBB API key
+      const imgbbURL = `https://api.imgbb.com/1/upload?key=${imgbbApiKey}`;
+    
+      fetch(imgbbURL, {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          const imageURL = data.data.url;
           saveBookToFirestore(bookTitle, bookAuthor, bookCategory, status, docLink, imageURL);
-        });
-      }).catch(error => {
+        } else {
+          alert('Image upload failed.');
+        }
+      })
+      .catch(error => {
         alert('Error uploading image: ' + error.message);
       });
     } else {
       // No image selected, proceed without uploading an image
-      saveBookToFirestore(bookTitle, bookAuthor, bookCategory, status, docLink, imageURL);
+      saveBookToFirestore(bookTitle, bookAuthor, bookCategory, status, docLink, null);
     }
   } else {
     alert('Please fill out all required fields!');
