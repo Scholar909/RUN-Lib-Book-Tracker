@@ -1,14 +1,12 @@
-if (!/Mobi|Android/i.test(navigator.userAgent)) {
-  document.body.innerHTML = "<h2>This app is only available on mobile devices.</h2>";
-} else {
-  // Your other JS code and imports go below this line
-}
-
-// Firebase Configuration
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
 import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-storage.js";
+
+if (!/Mobi|Android/i.test(navigator.userAgent)) {
+  document.body.innerHTML = "<h2>This app is only available on mobile devices.</h2>";
+} else {
+// Firebase Configuration
 
 // Firebase Configuration
 const firebaseConfig = {
@@ -64,7 +62,7 @@ document.getElementById('archiveForm').addEventListener('submit', function(event
       const formData = new FormData();
       formData.append('image', bookImage);
     
-      const imgbbApiKey = '76b5c9b8204181e4bb53f33eb96b8efb'; // Replace with your actual ImgBB API key
+      const imgbbApiKey = '27ab1b13f2070f19b9739869326c775c'; // Replace with your actual ImgBB API key
       const imgbbURL = `https://api.imgbb.com/1/upload?key=${imgbbApiKey}`;
     
       fetch(imgbbURL, {
@@ -74,8 +72,8 @@ document.getElementById('archiveForm').addEventListener('submit', function(event
       .then(response => response.json())
       .then(data => {
         if (data.success) {
-          const imageURL = data.data.url;
-          saveBookToFirestore(bookTitle, bookAuthor, bookCategory, status, docLink, imageURL);
+          const uploadedImageURL = data.data.url;
+          saveBookToFirestore(bookTitle, bookAuthor, bookCategory, status, docLink, uploadedImageURL);
         } else {
           alert('Image upload failed.');
         }
@@ -110,4 +108,5 @@ function saveBookToFirestore(title, author, category, status, docLink, imageURL)
   }).catch(error => {
     alert('Error adding book: ' + error.message);
   });
+}
 }
