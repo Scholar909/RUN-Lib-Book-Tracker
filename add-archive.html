@@ -6,7 +6,7 @@
   <title>BookRun - Add to Archive</title>
   <link rel="stylesheet" href="header.css" />
   <link rel="stylesheet" href="footer.css" />
-  <link rel="stylesheet" href="add-archive.css" />
+  <link rel="stylesheet" href="add-archive.css?=v2" />
 </head>
 <body>
 
@@ -26,7 +26,15 @@
     <h2>Add a Book to Archive</h2>
     <form id="archiveForm">
       <label>Book Cover (Optional)</label>
-      <input type="file" id="bookImage" accept="image/*">
+      <div class="book-image-wrapper">
+        <img 
+          src="images/default-book.png" 
+          alt="Book Cover" 
+          id="bookImagePreview"
+        >
+        <input type="file" id="bookImage" accept="image/*" style="display: none;">
+        <small>Tap to select book cover image</small>
+      </div>
 
       <label for="bookTitle">Book Title</label>
       <input type="text" id="bookTitle" required />
@@ -81,14 +89,14 @@
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
 
-  onAuthStateChanged(auth, (user) => {
+  /*onAuthStateChanged(auth, (user) => {
     if (!user) {
       // User not logged in, redirect to login
       window.location.replace("login.html");
     }
-  });
+  });*/
 </script>
   
-  <script src="add-archive.js" type="module"></script>
+  <script src="add-archive.js?=v2" type="module"></script>
 </body>
 </html>

@@ -24,6 +24,23 @@ const auth = getAuth();
 const db = getFirestore(app);
 const storage = getStorage(app);
 
+// ===== Book Image Preview and Upload =====
+const bookImageInput = document.getElementById('bookImage');
+const bookImagePreview = document.getElementById('bookImagePreview');
+
+bookImagePreview.addEventListener('click', () => bookImageInput.click());
+
+bookImageInput.addEventListener('change', () => {
+  const file = bookImageInput.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      bookImagePreview.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+});
+
 // Handle the display of document link field based on checkbox selection
 document.querySelectorAll('input[name="status"]').forEach(checkbox => {
   checkbox.addEventListener('change', toggleLinkField);

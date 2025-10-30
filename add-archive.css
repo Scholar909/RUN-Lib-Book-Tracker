@@ -48,3 +48,34 @@ button[type="submit"]:hover {
   color: red;
   font-weight: bold;
 }
+
+/* ==== BOOK IMAGE UPLOAD & PREVIEW ==== */
+
+.book-image-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 10px;
+}
+
+#bookImagePreview {
+  width: 120px;
+  height: 160px;
+  object-fit: cover;
+  border: 2px dashed #aaa;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#bookImagePreview:hover {
+  border-color: #4CAF50;
+  transform: scale(1.02);
+}
+
+.book-image-wrapper small {
+  color: #777;
+  font-size: 13px;
+  margin-top: 5px;
+}
