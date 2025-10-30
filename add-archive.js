@@ -59,7 +59,7 @@ function toggleLinkField() {
 }
 
 // Handle form submission and save data to Firebase Firestore
-document.getElementById('archiveForm').addEventListener('submit', function(event) {
+document.getElementById('archiveForm').addEventListener('submit', async function(event) {
   event.preventDefault(); // Prevent the form from refreshing the page
   
   // Get form values
@@ -77,27 +77,27 @@ document.getElementById('archiveForm').addEventListener('submit', function(event
 
     if (bookImage) {
       const formData = new FormData();
-      formData.append('image', bookImage);
+      formData.append("image", bookImage);
     
-      const imgbbApiKey = '27ab1b13f2070f19b9739869326c775c'; // Replace with your actual ImgBB API key
-      const imgbbURL = `https://api.imgbb.com/1/upload?key=${imgbbApiKey}`;
+      try {
+        const res = await fetch(`https://api.imgbb.com/1/upload?key=27ab1b13f2070f19b9739869326c775c`, {
+          method: "POST",
+          body: formData
+        });
+        const result = await res.json();
     
-      fetch(imgbbURL, {
-        method: 'POST',
-        body: formData
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success) {
-          const uploadedImageURL = data.data.url;
-          saveBookToFirestore(bookTitle, bookAuthor, bookCategory, status, docLink, uploadedImageURL);
+        if (result.success) {
+          const url = result.data.url;
+          await saveBookToFirestore(bookTitle, bookAuthor, bookCategory, status, docLink, url);
         } else {
-          alert('Image upload failed.');
+          alert("Image upload failed. Please try again.");
         }
-      })
-      .catch(error => {
-        alert('Error uploading image: ' + error.message);
-      });
+      } catch (err) {
+        console.error(err);
+        alert("Failed to upload image.");
+      }
+    } else {
+      await saveBookToFirestore(bookTitle, bookAuthor, bookCategory, status, docLink, null);
     } else {
       // No image selected, proceed without uploading an image
       saveBookToFirestore(bookTitle, bookAuthor, bookCategory, status, docLink, null);

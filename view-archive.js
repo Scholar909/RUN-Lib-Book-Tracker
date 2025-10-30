@@ -88,19 +88,19 @@ const displayBooks = (books) => {
         </div>
       `;
     }
-
+    
     bookEl.innerHTML = `
       <div class="book-container">
+        <div class="book-image">
+          <img src="${book.imageURL || 'images/default-book.png'}" alt="Book Image">
+        </div>
         <div class="book-details">
           <h4>${book.title}</h4>
-          <p>Author: ${book.author}</p>
-          <p>Category: ${book.category}</p>
-          <p>Status: ${book.status}</p>
-          ${book.status === 'on shelf' ? '' : getBookLink}
+          <p><strong>Author:</strong> ${book.author}</p>
+          <p><strong>Category:</strong> ${book.category}</p>
+          <p><strong>Status:</strong> ${book.status}</p>
+          ${book.status.toLowerCase().includes('online') ? getBookLink : ''}
           <button class="delete-btn" data-id="${book.id}">Delete Book</button>
-        </div>
-        <div class="book-image">
-        ${book.imageURL ? `<img src="${book.imageURL}" alt="Book Image">` : ''}
         </div>
       </div>
     `;
