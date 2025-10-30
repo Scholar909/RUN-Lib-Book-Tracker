@@ -2,6 +2,10 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebas
 import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
 import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-storage.js";
+
+if (!/Mobi|Android/i.test(navigator.userAgent)) {
+  document.body.innerHTML = "<h2>This app is only available on mobile devices.</h2>";
+} else {
 // Firebase Configuration
 
 // Firebase Configuration
@@ -28,11 +32,7 @@ window.addEventListener("DOMContentLoaded", () => {
   bookImageInput.addEventListener('change', () => {
     const file = bookImageInput.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        bookImagePreview.src = e.target.result;
-      };
-      reader.readAsDataURL(file);
+      bookImagePreview.src = URL.createObjectURL(file);
     }
   });
 });
@@ -119,4 +119,5 @@ function saveBookToFirestore(title, author, category, status, docLink, imageURL)
   }).catch(error => {
     alert('Error adding book: ' + error.message);
   });
+}
 }

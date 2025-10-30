@@ -51,6 +51,14 @@ button[type="submit"]:hover {
 
 /* ==== BOOK IMAGE UPLOAD & PREVIEW ==== */
 
+#bookImage {
+  opacity: 0;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  z-index: -1;
+}
+
 .book-image-wrapper {
   display: flex;
   justify-content: center;

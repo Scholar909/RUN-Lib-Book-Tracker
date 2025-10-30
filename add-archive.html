@@ -7,7 +7,7 @@
   <title>BookRun - Add to Archive</title>
   <link rel="stylesheet" href="header.css" />
   <link rel="stylesheet" href="footer.css" />
-  <link rel="stylesheet" href="add-archive.css?=v2" />
+  <link rel="stylesheet" href="add-archive.css?=v3" />
 </head>
 <body>
 
@@ -32,7 +32,7 @@
           <img id="bookImagePreview" src="" alt="Tap to add image" />
         </label>
       
-        <input type="file" id="bookImage" accept="image/*" style="display: none;">
+        <input type="file" id="bookImage" accept="image/*">
         <small>Tap to select book cover image</small>
       </div>
 
@@ -73,9 +73,7 @@
       });
   </script>
   
-  <script src="add-archive.js?=v10" type="module"></script>
-  <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
-  <script>eruda.init();</script>
+  <script src="add-archive.js?=v9" type="module"></script>
   
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
