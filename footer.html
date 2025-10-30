@@ -1,5 +1,9 @@
  <footer class="footer">
-   <p>
-    &copy; All rights reserved 2025. Created by O. E. Favour.
-   </p>
+  <p>
+    &copy; <span id="year"></span> All rights reserved. Created by O. E. Favour.
+  </p>
 </footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
