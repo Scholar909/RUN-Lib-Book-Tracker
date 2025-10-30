@@ -1,9 +1,3 @@
-if (!/Mobi|Android/i.test(navigator.userAgent)) {
-  document.body.innerHTML = "<h2>This app is only available on mobile devices.</h2>";
-} else {
-  // Your other JS code and imports go below this line
-}
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
 import { getAuth } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
 import { getFirestore, collection, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
