@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline' 'unsafe-eval' data: blob:;">
   <title>BookRun - Add to Archive</title>
   <link rel="stylesheet" href="header.css" />
   <link rel="stylesheet" href="footer.css" />
@@ -72,6 +73,8 @@
       });
   </script>
   
+  <script src="add-archive.js?=v9" type="module"></script>
+  
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
   import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
@@ -95,7 +98,5 @@
     }
   });
 </script>
-  
-  <script src="add-archive.js?=v8" type="module"></script>
 </body>
 </html>
