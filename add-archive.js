@@ -2,10 +2,6 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebas
 import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
 import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-storage.js";
-
-if (!/Mobi|Android/i.test(navigator.userAgent)) {
-  document.body.innerHTML = "<h2>This app is only available on mobile devices.</h2>";
-} else {
 // Firebase Configuration
 
 // Firebase Configuration
@@ -123,5 +119,4 @@ function saveBookToFirestore(title, author, category, status, docLink, imageURL)
   }).catch(error => {
     alert('Error adding book: ' + error.message);
   });
-}
 }
