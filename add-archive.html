@@ -27,11 +27,10 @@
     <form id="archiveForm">
       <label>Book Cover (Optional)</label>
       <div class="book-image-wrapper">
-        <img 
-          src="images/default-book.png" 
-          alt="Book Cover" 
-          id="bookImagePreview"
-        >
+        <label for="bookImage" style="cursor:pointer;">
+          <img id="bookImagePreview" src="" alt="Tap to add image" />
+        </label>
+      
         <input type="file" id="bookImage" accept="image/*" style="display: none;">
         <small>Tap to select book cover image</small>
       </div>
@@ -97,6 +96,6 @@
   });
 </script>
   
-  <script src="add-archive.js?=v7" type="module"></script>
+  <script src="add-archive.js?=v8" type="module"></script>
 </body>
 </html>

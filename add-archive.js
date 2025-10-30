@@ -28,8 +28,6 @@ const storage = getStorage(app);
 const bookImageInput = document.getElementById('bookImage');
 const bookImagePreview = document.getElementById('bookImagePreview');
 
-bookImagePreview.addEventListener('click', () => bookImageInput.click());
-
 bookImageInput.addEventListener('change', () => {
   const file = bookImageInput.files[0];
   if (file) {
