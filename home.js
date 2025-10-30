@@ -1,9 +1,3 @@
-if (!/Mobi|Android/i.test(navigator.userAgent)) {
-  document.body.innerHTML = "<h2>This app is only available on mobile devices.</h2>";
-} else {
-  // Your other JS code and imports go below this line
-}
-
 const typingElement = document.getElementById("typing-text");
 const texts = [
   "Welcome to BookRun — Your Campus Library Companion!",
