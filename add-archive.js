@@ -1,7 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
 import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-storage.js";
+import { getStorage } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-storage.js";
 
 // Firebase Configuration
 const firebaseConfig = {
@@ -23,6 +23,8 @@ const storage = getStorage(app);
 window.addEventListener("DOMContentLoaded", () => {
   const bookImageInput = document.getElementById('bookImage');
   const bookImagePreview = document.getElementById('bookImagePreview');
+  const saveBtn = document.getElementById('saveBtn');
+  const loadingText = document.getElementById('loadingText');
 
   bookImageInput.addEventListener('change', () => {
     const file = bookImageInput.files[0];
@@ -30,88 +32,86 @@ window.addEventListener("DOMContentLoaded", () => {
       bookImagePreview.src = URL.createObjectURL(file);
     }
   });
+
+  document.getElementById('archiveForm').addEventListener('submit', async function(event) {
+    event.preventDefault();
+
+    const bookTitle = document.getElementById('bookTitle').value.trim();
+    const bookAuthor = document.getElementById('bookAuthor').value.trim();
+    const bookCategory = document.getElementById('bookCategory').value.trim();
+    const statusCheckboxes = document.querySelectorAll('input[name="status"]:checked');
+    const status = Array.from(statusCheckboxes).map(cb => cb.value).join(', ');
+    const docLink = document.getElementById('docLink').value.trim();
+    const bookImage = document.getElementById('bookImage').files[0];
+
+    if (bookTitle && bookAuthor && bookCategory && status) {
+      try {
+        saveBtn.disabled = true;
+        loadingText.textContent = "Saving, please wait...";
+
+        let imageURL = null;
+
+        if (bookImage) {
+          const formData = new FormData();
+          formData.append("image", bookImage);
+
+          const res = await fetch(`https://api.imgbb.com/1/upload?key=27ab1b13f2070f19b9739869326c775c`, {
+            method: "POST",
+            body: formData
+          });
+          const result = await res.json();
+
+          if (result.success) {
+            imageURL = result.data.url;
+          } else {
+            alert("Image upload failed. Please try again.");
+            return;
+          }
+        }
+
+        await saveBookToFirestore(bookTitle, bookAuthor, bookCategory, status, docLink, imageURL);
+
+        // Clear form + image preview
+        document.getElementById('archiveForm').reset();
+        bookImagePreview.src = ""; // ✅ Clears the preview
+        loadingText.textContent = "";
+        saveBtn.disabled = false;
+        alert('Book added to archive successfully!');
+        toggleLinkField();
+
+      } catch (err) {
+        console.error(err);
+        alert("Failed to add book. Please check your connection and try again.");
+        loadingText.textContent = "";
+        saveBtn.disabled = false;
+      }
+    } else {
+      alert('Please fill out all required fields!');
+    }
+  });
 });
 
-// Handle the display of document link field based on checkbox selection
-document.querySelectorAll('input[name="status"]').forEach(checkbox => {
-  checkbox.addEventListener('change', toggleLinkField);
-});
+function saveBookToFirestore(title, author, category, status, docLink, imageURL) {
+  const bookRef = collection(db, 'books');
+  return addDoc(bookRef, {
+    title,
+    author,
+    category,
+    status,
+    docLink: status.includes('Online') || status.includes('Both') ? docLink : null,
+    imageURL
+  });
+}
 
+// Toggle link field
 function toggleLinkField() {
   const onlineCheckbox = document.querySelector('input[name="status"][value="Online"]');
   const bothCheckbox = document.querySelector('input[name="status"][value="Both"]');
   const onlineLinkField = document.getElementById('onlineLinkField');
-  
+
   if (onlineCheckbox.checked || bothCheckbox.checked) {
-    onlineLinkField.style.display = 'block'; // Show the document link field
+    onlineLinkField.style.display = 'block';
   } else {
-    onlineLinkField.style.display = 'none'; // Hide the document link field
+    onlineLinkField.style.display = 'none';
   }
-}
-
-// Handle form submission and save data to Firebase Firestore
-document.getElementById('archiveForm').addEventListener('submit', async function(event) {
-  event.preventDefault(); // Prevent form refresh
-
-  // Get form values
-  const bookTitle = document.getElementById('bookTitle').value.trim();
-  const bookAuthor = document.getElementById('bookAuthor').value.trim();
-  const bookCategory = document.getElementById('bookCategory').value.trim();
-  const statusCheckboxes = document.querySelectorAll('input[name="status"]:checked');
-  const status = Array.from(statusCheckboxes).map(cb => cb.value).join(', ');
-  const docLink = document.getElementById('docLink').value.trim();
-  const bookImage = document.getElementById('bookImage').files[0];
-
-  if (bookTitle && bookAuthor && bookCategory && status) {
-    try {
-      let imageURL = null;
-
-      if (bookImage) {
-        const formData = new FormData();
-        formData.append("image", bookImage);
-
-        const res = await fetch(`https://api.imgbb.com/1/upload?key=27ab1b13f2070f19b9739869326c775c`, {
-          method: "POST",
-          body: formData
-        });
-        const result = await res.json();
-
-        if (result.success) {
-          imageURL = result.data.url;
-        } else {
-          alert("Image upload failed. Please try again.");
-          return; // Stop execution here if upload failed
-        }
-      }
-
-      // Save the book (whether image uploaded or not)
-      await saveBookToFirestore(bookTitle, bookAuthor, bookCategory, status, docLink, imageURL);
-
-    } catch (err) {
-      console.error(err);
-      alert("Failed to add book. Please check your connection and try again.");
-    }
-  } else {
-    alert('Please fill out all required fields!');
-  }
-});
-
-// Function to save book data to Firestore
-function saveBookToFirestore(title, author, category, status, docLink, imageURL) {
-  const bookRef = collection(db, 'books');
-
-  addDoc(bookRef, {
-    title: title,
-    author: author,
-    category: category,
-    status: status,
-    docLink: status.includes('Online') || status.includes('Both') ? docLink : null,
-    imageURL: imageURL // Will be null if no image is uploaded
-  }).then(() => {
-    alert('Book added to archive successfully!');
-    document.getElementById('archiveForm').reset();
-    toggleLinkField(); // Hide the document link input if status changes
-  }).catch(error => {
-    alert('Error adding book: ' + error.message);
-  });
 }
