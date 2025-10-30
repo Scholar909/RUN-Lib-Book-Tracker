@@ -60,47 +60,45 @@ function toggleLinkField() {
 
 // Handle form submission and save data to Firebase Firestore
 document.getElementById('archiveForm').addEventListener('submit', async function(event) {
-  event.preventDefault(); // Prevent the form from refreshing the page
-  
+  event.preventDefault(); // Prevent form refresh
+
   // Get form values
-  const bookTitle = document.getElementById('bookTitle').value;
-  const bookAuthor = document.getElementById('bookAuthor').value;
-  const bookCategory = document.getElementById('bookCategory').value;
+  const bookTitle = document.getElementById('bookTitle').value.trim();
+  const bookAuthor = document.getElementById('bookAuthor').value.trim();
+  const bookCategory = document.getElementById('bookCategory').value.trim();
   const statusCheckboxes = document.querySelectorAll('input[name="status"]:checked');
-  const status = Array.from(statusCheckboxes).map(checkbox => checkbox.value).join(', ');
-  const docLink = document.getElementById('docLink').value;
+  const status = Array.from(statusCheckboxes).map(cb => cb.value).join(', ');
+  const docLink = document.getElementById('docLink').value.trim();
   const bookImage = document.getElementById('bookImage').files[0];
 
   if (bookTitle && bookAuthor && bookCategory && status) {
-    // Create a reference for Firebase Storage (for image upload)
-    let imageURL = null;
+    try {
+      let imageURL = null;
 
-    if (bookImage) {
-      const formData = new FormData();
-      formData.append("image", bookImage);
-    
-      try {
+      if (bookImage) {
+        const formData = new FormData();
+        formData.append("image", bookImage);
+
         const res = await fetch(`https://api.imgbb.com/1/upload?key=27ab1b13f2070f19b9739869326c775c`, {
           method: "POST",
           body: formData
         });
         const result = await res.json();
-    
+
         if (result.success) {
-          const url = result.data.url;
-          await saveBookToFirestore(bookTitle, bookAuthor, bookCategory, status, docLink, url);
+          imageURL = result.data.url;
         } else {
           alert("Image upload failed. Please try again.");
+          return; // Stop execution here if upload failed
         }
-      } catch (err) {
-        console.error(err);
-        alert("Failed to upload image.");
       }
-    } else {
-      await saveBookToFirestore(bookTitle, bookAuthor, bookCategory, status, docLink, null);
-    } else {
-      // No image selected, proceed without uploading an image
-      saveBookToFirestore(bookTitle, bookAuthor, bookCategory, status, docLink, null);
+
+      // Save the book (whether image uploaded or not)
+      await saveBookToFirestore(bookTitle, bookAuthor, bookCategory, status, docLink, imageURL);
+
+    } catch (err) {
+      console.error(err);
+      alert("Failed to add book. Please check your connection and try again.");
     }
   } else {
     alert('Please fill out all required fields!');
